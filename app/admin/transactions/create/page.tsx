@@ -1,4 +1,3 @@
-// app/admin/transactions/create/page.tsx
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -7,17 +6,20 @@ import { useRouter } from 'next/navigation';
 interface Produk {
   id: string;
   name: string;
-  [key: string]: any;
+  price: number;
 }
 
 export default function CreateTransactionPage() {
   const router = useRouter();
 
   const [produkList, setProdukList] = useState<Produk[]>([]);
+  const [selectedProduk, setSelectedProduk] = useState<Produk | null>(null);
+
   const [form, setForm] = useState({
     produkId: '',
     nama_pembeli: '',
     tanggal_transaksi: '',
+    quantity: 1,
     total_harga: 0,
   });
 
@@ -27,13 +29,38 @@ export default function CreateTransactionPage() {
       .then((data) => setProdukList(data));
   }, []);
 
+  useEffect(() => {
+    if (selectedProduk) {
+      const total = selectedProduk.price * form.quantity;
+      setForm((prev) => ({ ...prev, total_harga: total }));
+    }
+  }, [form.quantity, selectedProduk]);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
 
-    setForm((prev) => ({
-      ...prev,
-      [name]: name === 'total_harga' ? Number(value) || 0 : value,
-    }));
+    if (name === 'produkId') {
+      const produk = produkList.find((p) => p.id === value) || null;
+      setSelectedProduk(produk);
+
+      setForm((prev) => ({
+        ...prev,
+        produkId: value,
+        total_harga: produk ? produk.price * prev.quantity : 0,
+      }));
+    } else if (name === 'quantity') {
+      const qty = parseInt(value) || 1;
+      setForm((prev) => ({
+        ...prev,
+        quantity: qty,
+        total_harga: selectedProduk ? selectedProduk.price * qty : 0,
+      }));
+    } else {
+      setForm((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -53,7 +80,7 @@ export default function CreateTransactionPage() {
 
   return (
     <div className="p-6 max-w-xl mx-auto">
-      <h1 className="text-2xl font-bold mb-4">Tambah Transaksi</h1>
+      <h1 className="text-2xl font-bold mb-4 text-center">Tambah Transaksi</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
         <select
           name="produkId"
@@ -65,7 +92,7 @@ export default function CreateTransactionPage() {
           <option value="">Pilih Produk</option>
           {produkList.map((produk) => (
             <option key={produk.id} value={produk.id}>
-              {produk.name}
+              {produk.name} - Rp {produk.price.toLocaleString()}
             </option>
           ))}
         </select>
@@ -91,21 +118,30 @@ export default function CreateTransactionPage() {
 
         <input
           type="number"
-          name="total_harga"
-          value={form.total_harga.toString()}
+          name="quantity"
+          min={1}
+          value={form.quantity}
           onChange={handleChange}
-          placeholder="Total Harga"
           className="w-full p-2 border rounded"
+          placeholder="Jumlah Bunga"
           required
+        />
+
+        <input
+          type="number"
+          name="total_harga"
+          value={form.total_harga}
+          readOnly
+          className="w-full p-2 border rounded bg-gray-100 text-gray-600"
         />
 
         <button
           type="submit"
-          className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+          className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 w-full"
         >
           Simpan Transaksi
         </button>
       </form>
-    </div>
-  );
+    </div>
+  );
 }

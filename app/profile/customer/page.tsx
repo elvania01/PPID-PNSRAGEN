@@ -54,7 +54,7 @@ const CustomerProfilePage = () => {
       <div className="bg-pink-100 rounded-xl shadow-md p-6 max-w-sm mx-auto text-center">
         <img
           src="/team/owner3.jpg"
-          alt="Customer"
+          alt="user123"
           className="w-32 h-32 object-cover rounded-full mx-auto mb-4 border-4 border-pink-300"
         />
         <h2 className="text-xl font-semibold text-pink-700">{userData.name}</h2>

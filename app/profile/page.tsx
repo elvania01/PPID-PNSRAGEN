@@ -15,19 +15,9 @@ const OwnerProfilePage = () => {
   const [isChecking, setIsChecking] = useState(true);
   const [owners, setOwners] = useState<Owner[]>([
     {
-      name: "Vinsensius",
-      image: "/team/owner1.jpg",
-      desc: "A flower enthusiast with a passion for transforming nature’s beauty into meaningful works of art...",
-    },
-    {
-      name: "Elvania",
-      image: "/team/owner2.jpg",
-      desc: "With experience and meticulous attention to every detail, Elvania is committed to creating floral arrangements...",
-    },
-    {
-      name: "Aditya",
+      name: "Admin",
       image: "/team/owner3.jpg",
-      desc: "He creates designs that are not only beautiful but also convey emotions and stories in every moment...",
+      desc: "A flower enthusiast with a passion for transforming nature’s beauty into meaningful works of art...",
     },
   ]);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);

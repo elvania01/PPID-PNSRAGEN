@@ -34,8 +34,6 @@ const LoginPage = () => {
     }
     
     try {
-      // For regular users, attempt to verify credentials (this would be a real API call in production)
-      // This is a simplified example - in a real app, you'd have a proper authentication API
       if (email === "user123" && password === "12345") {
         localStorage.setItem("isLoggedIn", "true");
         localStorage.setItem("username", "Customer");

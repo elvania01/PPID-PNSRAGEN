@@ -8,7 +8,7 @@ export default function TransactionTableSkeleton() {
       {/* Table */}
       <div className="overflow-x-auto">
         <table className="w-full bg-white border shadow">
-          <thead className="bg-blue-100">
+          <thead className="bg-pink-100">
             <tr>
               <th className="px-4 py-2 border text-left">Produk</th>
               <th className="px-4 py-2 border text-left">Pembeli</th>
@@ -19,7 +19,7 @@ export default function TransactionTableSkeleton() {
           </thead>
           <tbody>
             {[...Array(5)].map((_, i) => (
-              <tr key={i} className="hover:bg-blue-50">
+              <tr key={i} className="hover:bg-pink-50">
                 <td className="px-4 py-2 border">
                   <div className="h-4 bg-gray-200 rounded w-32" />
                 </td>
